@@ -1,0 +1,76 @@
+# Android SDK
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=Q9WMN3C2JXDKS)
+
+## Overview
+
+Android SDK image with minimal required set of tools for CI deployment. **Does not contain emulator images** to minimize the footprint.
+
+Preinstalled tools:
+
+Path | Version | Description | Location  
+------- | ------- | ------- | -------  
+build-tools;32.0.0 | 32.0.0 | Android SDK Build-Tools 32 | build-tools/32.0.0  
+emulator | 31.2.10 | Android Emulator | emulator  
+extras;android;m2repository | 47.0.0 | Android Support Repository | extras/android/m2repository  
+extras;google;m2repository | 58 | Google Repository | extras/google/m2repository  
+patcher;v4 | 1 | SDK Patch Applier v4 | patcher/v4  
+platform-tools | 33.0.2 | Android SDK Platform-Tools | platform-tools  
+platforms;android-31 | 1 | Android SDK Platform 31 | platforms/android-31
+
+## Quick start
+
+### GitLab docker runner
+
+#### Register docker runner
+
+1. Initiate registration
+
+    ```shell
+    docker run --rm -it -v /etc/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner:latest register
+    ```
+  
+    Update `/etc/gitlab-runner` directory or use volume if you prefer to store the configuration in another place.
+
+1. Follow the registration steps.
+1. On the `executor` configuration step set `docker`.
+1. On the `default docker image` step set `venk0/android-sdk:latest`.
+
+#### Configure runner
+
+Mount host directories with Gradle and SDK caches. Edit `/etc/gitlab-runner/config.toml`, set `volumes` as following:
+
+```toml
+volumes = ["/cache", "/srv/gitlab-runner-data/mnt/.gradle:/root/.gradle", "/srv/gitlab-runner-data/mnt/.android:/root/.android", "/srv/gitlab-runner-data/mnt/android-sdk/licenses/:/opt/android/licenses"]
+```
+
+Update `/srv/gitlab-runner-data/mnt` directory or use volume if you prefer to store the data cache mounts in another place.
+
+#### Launch runner
+
+Run docker container:
+
+```shell
+docker run -v /etc/gitlab-runner:/etc/gitlab-runner \ 
+-v /var/run/docker.sock:/var/run/docker.sock \ 
+--name gitlab-runner --restart unless-stopped -d \ 
+gitlab/gitlab-runner:latest
+```
+
+Or use with docker-compose:
+
+```yaml
+version: '3'
+services:
+  gitlab-runner:
+    container_name: gitlab-runner
+    image: gitlab/gitlab-runner:latest
+    volumes:
+      - '/etc/gitlab-runner:/etc/gitlab-runner'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    restart: unless-stopped
+```
+
+## License
+
+The Dockerfiles and associated code and scripts are licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
