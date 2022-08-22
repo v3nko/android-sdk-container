@@ -34,7 +34,14 @@ platforms;android-31 | 1 | Android SDK Platform 31 | platforms/android-31
 
 1. Follow the registration steps.
 1. On the `executor` configuration step set `docker`.
-1. On the `default docker image` step set `venk0/android-sdk:latest`.
+1. Set default docker image. This step sets default docker image that will be used for runner executor when no image is specified in project CI configuration.
+    1. *Option A.* Set `docker image` to `docker:stable`. This way you will be able to run any docker container with this runner. Specify the image in the `.gitlab-ci.yml`:
+
+        ```yaml
+        image: venk0/android-sdk:latest
+        ```
+
+    1. *Option B*. Set `docker image` to `venk0/android-sdk:latest`. Using this option no changes in the `.gitlab-ci.yml` will be required.
 
 #### Configure runner
 
