@@ -24,7 +24,6 @@ jobs:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/android-sdk
           tags: |
             type=ref,event=tag
-            type=raw,value=latest,event=tag
             type=raw,value=edge,event=tag
             type=edge,branch=dev
       -
