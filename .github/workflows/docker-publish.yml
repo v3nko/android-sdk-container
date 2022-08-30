@@ -7,8 +7,8 @@ on:
       - 'dev'
     tags:
       - '*'
-#    paths:
-#      - Dockerfile
+    paths:
+      - Dockerfile
 
 jobs:
   docker-publish:
