@@ -25,8 +25,8 @@ jobs:
           tags: |
             type=ref,event=tag
             type=raw,value=latest,event=tag
+            type=raw,value=edge,event=tag
             type=edge,branch=dev
-            type=edge,event=tag
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
