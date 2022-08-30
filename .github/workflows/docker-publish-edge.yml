@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - 'dev'
-#    paths:
-#      - Dockerfile
+    paths:
+      - Dockerfile
 
 jobs:
-  docker:
+  docker-publish:
     runs-on: ubuntu-latest
     steps:
       -
