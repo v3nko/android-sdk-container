@@ -6,17 +6,13 @@
 
 Android SDK image with minimal required set of tools for CI deployment. **Does not contain emulator images** to minimize the footprint.
 
-Preinstalled tools:
+Preinstalled tools/components:
 
-Path | Version | Description | Location  
-------- | ------- | ------- | -------  
-build-tools;32.0.0 | 32.0.0 | Android SDK Build-Tools 32 | build-tools/32.0.0  
-emulator | 31.2.10 | Android Emulator | emulator  
-extras;android;m2repository | 47.0.0 | Android Support Repository | extras/android/m2repository  
-extras;google;m2repository | 58 | Google Repository | extras/google/m2repository  
-patcher;v4 | 1 | SDK Patch Applier v4 | patcher/v4  
-platform-tools | 33.0.2 | Android SDK Platform-Tools | platform-tools  
-platforms;android-31 | 1 | Android SDK Platform 31 | platforms/android-31
+Tool/Component | Version
+------- | -------
+OpenJDK | 17
+Android SDK Build-Tools | 33.0.2
+Android SDK Platform | 31
 
 ## Quick start
 
