@@ -74,6 +74,29 @@ services:
     restart: unless-stopped
 ```
 
+## Docker image publishing workflow
+
+This repository contains a GitHub Actions workflow that automates the publishing of a Docker image for the Android SDK on DockerHub. The workflow is triggered under specific conditions:
+
+1. Push Event to the `dev` Branch:
+   - Whenever code changes are pushed to the `dev` branch, the workflow will be triggered.
+   - The Docker image will be built and published with the tag `edge`, indicating an edge version of the image.
+
+2. Creation of a New Tag on Any Branch:
+   - When a new tag is created on any branch, the workflow will be triggered.
+   - The Docker image will be built and published with the following tags:
+     - A tag named `latest`, indicating the latest stable version of the image.
+     - A tag based on the name of the git tag that triggered the workflow.
+
+It's important to note that the workflow excludes pull request events from triggering the build and push process, ensuring that Docker images are not published on pull requests. Additionally, the workflow is specific to the `Dockerfile`, meaning it only runs when changes are made to the Dockerfile in the repository.
+
+### Preparing Secrets
+
+Before using the workflow in your repository, ensure to properly configure the required secrets in the GitHub repository settings. The following secrets need to be set:
+
+- `DOCKERHUB_USERNAME`: Your DockerHub username.
+- `DOCKERHUB_TOKEN`: An access token with the necessary permissions to publish images to your DockerHub repository.
+
 ## License
 
 The Dockerfiles and associated code and scripts are licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
