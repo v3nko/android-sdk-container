@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt update && apt upgrade -y && apt install openjdk-17-jdk wget unzip git -y && apt clean
+RUN apt update && apt upgrade -y && apt install openjdk-17-jdk wget unzip -y
 
 ENV ANDROID_HOME /opt/android
 ENV PATH ${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
@@ -23,6 +23,9 @@ RUN echo "y" | sdkmanager "extras;android;m2repository"
 RUN echo "y" | sdkmanager "extras;google;m2repository"
 RUN echo "y" | sdkmanager "platforms;android-31"
 RUN echo "y" | sdkmanager --update
+
+RUN apt install git curl iputils-ping dnsutils jsonnet -y
+RUN apt autoremove -y && apt clean
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN ln -s $ANDROID_HOME /usr/lib/android-sdk
