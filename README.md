@@ -11,11 +11,12 @@ Preinstalled tools/components:
 Tool/Component | Version
 ------- | -------
 OpenJDK | 17
-Android SDK Build-Tools | 34.0.0, 33.0.2, 33.0.1
-Android SDK Platform | 33
-Git | 2.34.1
-Curl | 7.81.0
-Jsonnet | 0.17.0
+Android SDK Build-Tools | 35.0.0, 34.0.0, 33.0.2, 33.0.1
+Android SDK Platform | 36
+Git | 2.43.0
+Curl | 8.5.0
+Jsonnet | 0.20.0
+GitLab CLI | 1.67.0
 iputils-ping |
 dnsutils |
 
