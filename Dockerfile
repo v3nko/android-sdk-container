@@ -28,10 +28,10 @@ RUN echo "y" | sdkmanager "platforms;android-36"
 RUN echo "y" | sdkmanager --update
 
 RUN apt-get install git curl iputils-ping dnsutils jsonnet -y \
-  && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.67.0/downloads/glab_1.67.0_linux_amd64.tar.gz \
-  && tar -xzf glab_1.67.0_linux_amd64.tar.gz \
-  && mv bin/glab /usr/local/bin/ \
-  && rm -rf glab_1.67.0_linux_amd64.tar.gz bin CHANGELOG.md LICENSE README.md
+  && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.67.0/downloads/glab_1.67.0_linux_amd64.tar.gz -O /tmp/glab.tar.gz \
+  && tar -xzf /tmp/glab.tar.gz -C /tmp \
+  && mv /tmp/bin/glab /usr/local/bin/ \
+  && rm -rf /tmp/glab.tar.gz /tmp/bin /tmp/CHANGELOG.md /tmp/LICENSE /tmp/README.md
 RUN apt-get autoremove -y && apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
