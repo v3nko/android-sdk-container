@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 
-RUN apt update && apt upgrade -y && apt install openjdk-17-jdk wget unzip -y
+RUN apt-get update && apt-get upgrade -y && apt-get install openjdk-17-jdk wget unzip -y
 
-ENV ANDROID_HOME /opt/android
-ENV PATH ${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
+ENV ANDROID_HOME=/opt/android
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
 RUN mkdir $ANDROID_HOME
 
@@ -27,12 +27,12 @@ RUN echo "y" | sdkmanager "extras;google;m2repository"
 RUN echo "y" | sdkmanager "platforms;android-36"
 RUN echo "y" | sdkmanager --update
 
-RUN apt install git curl iputils-ping dnsutils jsonnet -y \
+RUN apt-get install git curl iputils-ping dnsutils jsonnet -y \
   && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.67.0/downloads/glab_1.67.0_linux_amd64.tar.gz \
   && tar -xzf glab_1.67.0_linux_amd64.tar.gz \
   && mv bin/glab /usr/local/bin/ \
   && rm -rf glab_1.67.0_linux_amd64.tar.gz bin CHANGELOG.md LICENSE README.md
-RUN apt autoremove -y && apt clean
+RUN apt-get autoremove -y && apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN ln -s $ANDROID_HOME /usr/lib/android-sdk
