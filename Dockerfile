@@ -1,7 +1,14 @@
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get upgrade -y && apt-get install openjdk-17-jdk wget unzip -y
+RUN apt-get update && apt-get upgrade -y \
+  && apt-get install -y wget unzip ca-certificates gnupg \
+  && mkdir -p /etc/apt/keyrings \
+  && wget -qO /etc/apt/keyrings/adoptium.asc https://packages.adoptium.net/artifactory/api/gpg/key/public \
+  && echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/adoptium.list \
+  && apt-get update \
+  && apt-get install -y temurin-21-jdk
 
+ENV JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64
 ENV ANDROID_HOME=/opt/android
 ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
@@ -28,7 +35,7 @@ RUN echo "y" | sdkmanager "platforms;android-36"
 RUN echo "y" | sdkmanager --update
 
 RUN apt-get install -y git curl iputils-ping dnsutils jsonnet jq \
-  && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.67.0/downloads/glab_1.67.0_linux_amd64.tar.gz -O /tmp/glab.tar.gz \
+  && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.115.0/downloads/glab_1.115.0_linux_amd64.tar.gz -O /tmp/glab.tar.gz \
   && tar -xzf /tmp/glab.tar.gz -C /tmp \
   && mv /tmp/bin/glab /usr/local/bin/ \
   && rm -rf /tmp/glab.tar.gz /tmp/bin /tmp/CHANGELOG.md /tmp/LICENSE /tmp/README.md

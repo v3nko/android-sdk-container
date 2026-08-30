@@ -10,16 +10,12 @@ Preinstalled tools/components:
 
 Tool/Component | Version
 ------- | -------
-OpenJDK | 17
+Eclipse Temurin JDK | 21
 Android SDK Build-Tools | 35.0.0, 34.0.0, 33.0.2, 33.0.1
 Android SDK Platform | 36
-Git | 2.43.0
-Curl | 8.5.0
-Jsonnet | 0.20.0
-GitLab CLI | 1.67.0
-jq | 1.7.1
-iputils-ping | 20240117
-dnsutils | 9.18.30
+GitLab CLI | 1.115.0
+
+Additionally installed from the Ubuntu repositories (versions follow the base image, so they are not pinned): `git`, `curl`, `wget`, `unzip`, `jsonnet`, `jq`, `iputils-ping`, `dnsutils`.
 
 ## Quick start
 
