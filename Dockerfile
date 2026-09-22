@@ -39,6 +39,10 @@ RUN apt-get install -y git curl iputils-ping dnsutils jsonnet jq \
   && tar -xzf /tmp/glab.tar.gz -C /tmp \
   && mv /tmp/bin/glab /usr/local/bin/ \
   && rm -rf /tmp/glab.tar.gz /tmp/bin /tmp/CHANGELOG.md /tmp/LICENSE /tmp/README.md
+
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+  && apt-get install -y nodejs
+
 RUN apt-get autoremove -y && apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 

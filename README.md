@@ -13,6 +13,7 @@ Tool/Component | Version
 Eclipse Temurin JDK | 21
 Android SDK Build-Tools | 35.0.0, 34.0.0, 33.0.2, 33.0.1
 Android SDK Platform | 36
+Node.js | 24
 GitLab CLI | 1.115.0
 
 Additionally installed from the Ubuntu repositories (versions follow the base image, so they are not pinned): `git`, `curl`, `wget`, `unzip`, `jsonnet`, `jq`, `iputils-ping`, `dnsutils`.
