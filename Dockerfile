@@ -23,7 +23,6 @@ RUN wget https://dl.google.com/android/repository/commandlinetools-linux-1311475
   && rm -r $ANDROID_HOME/tmp/ \
   && rm android-sdk.zip
 
-RUN echo "y" | sdkmanager "tools"
 RUN echo "y" | sdkmanager "platform-tools"
 RUN echo "y" | sdkmanager "build-tools;35.0.0"
 RUN echo "y" | sdkmanager "build-tools;34.0.0"
