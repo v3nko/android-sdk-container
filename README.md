@@ -139,7 +139,7 @@ jobs:
       - name: Initialize AVD idempotently
         run: |
           AVD_NAME="test_avd"
-          if ! avdmanager list avd | grep -q "${AVD_NAME}"; then
+          if ! avdmanager list avd -c | grep -Fxq "${AVD_NAME}"; then
             echo "Creating AVD ${AVD_NAME}..."
             echo "no" | avdmanager create avd \
               --name "${AVD_NAME}" \
@@ -160,7 +160,7 @@ jobs:
 
       - name: Launch headless emulator
         run: |
-          emulator -avd test_avd \
+          nohup emulator -avd test_avd \
             -no-window \
             -no-audio \
             -no-boot-anim \
@@ -168,7 +168,7 @@ jobs:
             -gpu swiftshader_indirect \
             -camera-back none \
             -camera-front none \
-            -timezone UTC &
+            -timezone UTC > /tmp/emulator.log 2>&1 &
 
       - name: Wait for emulator boot
         run: |
@@ -187,6 +187,8 @@ jobs:
 
           if [ "${BOOT_COMPLETED}" != "1" ]; then
             echo "Error: Emulator failed to boot within ${TIMEOUT} seconds."
+            echo "--- Emulator Logs ---"
+            cat /tmp/emulator.log
             exit 1
           fi
 

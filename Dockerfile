@@ -37,6 +37,14 @@ RUN echo "y" | sdkmanager "platforms;android-36"
 RUN echo "y" | sdkmanager --update
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    iputils-ping \
+    dnsutils \
+    jsonnet \
+    jq \
+    cpu-checker \
+    pciutils \
     libgl1 \
     libpulse0 \
     libnss3 \
@@ -56,19 +64,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-3 \
     libxkbcommon0 \
     libxkbcommon-x11-0 \
-    pciutils \
-    cpu-checker
-
-RUN apt-get install -y git curl iputils-ping dnsutils jsonnet jq \
   && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.115.0/downloads/glab_1.115.0_linux_amd64.tar.gz -O /tmp/glab.tar.gz \
   && tar -xzf /tmp/glab.tar.gz -C /tmp \
   && mv /tmp/bin/glab /usr/local/bin/ \
-  && rm -rf /tmp/glab.tar.gz /tmp/bin /tmp/CHANGELOG.md /tmp/LICENSE /tmp/README.md
+  && rm -rf /tmp/glab.tar.gz /tmp/bin /tmp/CHANGELOG.md /tmp/LICENSE /tmp/README.md \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y nodejs
 
-RUN apt-get autoremove -y && apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get autoremove -y && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s $ANDROID_HOME /usr/lib/android-sdk
