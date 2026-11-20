@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     dnsutils \
     jsonnet \
     jq \
+    procps \
     cpu-checker \
     pciutils \
     libgl1 \

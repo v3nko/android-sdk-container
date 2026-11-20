@@ -17,7 +17,7 @@ Android Emulator | Latest (`emulator`)
 Node.js | 24
 GitLab CLI | 1.115.0
 
-Additionally installed from the Ubuntu repositories (versions follow the base image, so they are not pinned): `git`, `curl`, `wget`, `unzip`, `jsonnet`, `jq`, `iputils-ping`, `dnsutils`, `cpu-checker`, `pciutils`, and runtime graphics/audio libraries for headless SwiftShader execution (`libgl1`, `libpulse0`, `libnss3`, `libx11-6`, `libxcb1`, `libxcomposite1`, `libxcursor1`, `libxdamage1`, `libxext6`, `libxfixes3`, `libxi6`, `libxrandr2`, `libxrender1`, `libxtst6`, `libfontconfig1`, `libfreetype6`, `libdbus-1-3`, `libxkbcommon0`, `libxkbcommon-x11-0`).
+Additionally installed from the Ubuntu repositories (versions follow the base image, so they are not pinned): `git`, `curl`, `wget`, `unzip`, `jsonnet`, `jq`, `iputils-ping`, `dnsutils`, `procps`, `cpu-checker`, `pciutils`, and runtime graphics/audio libraries for headless SwiftShader execution (`libgl1`, `libpulse0`, `libnss3`, `libx11-6`, `libxcb1`, `libxcomposite1`, `libxcursor1`, `libxdamage1`, `libxext6`, `libxfixes3`, `libxi6`, `libxrandr2`, `libxrender1`, `libxtst6`, `libfontconfig1`, `libfreetype6`, `libdbus-1-3`, `libxkbcommon0`, `libxkbcommon-x11-0`).
 
 ## Quick start
 
@@ -168,6 +168,7 @@ jobs:
             -camera-back none \
             -camera-front none \
             -timezone UTC > /tmp/emulator.log 2>&1 &
+          echo $! > /tmp/emulator.pid
 
       - name: Wait for emulator boot
         run: |
@@ -177,7 +178,7 @@ jobs:
           ELAPSED=0
 
           until [ "${BOOT_COMPLETED}" = "1" ] || [ ${ELAPSED} -ge ${TIMEOUT} ]; do
-            if ! pgrep -f "emulator" > /dev/null; then
+            if [ -f /tmp/emulator.pid ] && ! kill -0 "$(< /tmp/emulator.pid)" 2>/dev/null; then
               echo "Error: Emulator process terminated unexpectedly."
               echo "--- Emulator Logs ---"
               cat /tmp/emulator.log
