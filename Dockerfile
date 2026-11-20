@@ -10,7 +10,9 @@ RUN apt-get update && apt-get upgrade -y \
 
 ENV JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64
 ENV ANDROID_HOME=/opt/android
-ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+ENV ANDROID_USER_HOME=/root/.android
+ENV ANDROID_AVD_HOME=/root/.android/avd
+ENV PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
 RUN mkdir $ANDROID_HOME
 
@@ -24,6 +26,7 @@ RUN wget https://dl.google.com/android/repository/commandlinetools-linux-1311475
   && rm android-sdk.zip
 
 RUN echo "y" | sdkmanager "platform-tools"
+RUN echo "y" | sdkmanager "emulator"
 RUN echo "y" | sdkmanager "build-tools;35.0.0"
 RUN echo "y" | sdkmanager "build-tools;34.0.0"
 RUN echo "y" | sdkmanager "build-tools;33.0.2"
@@ -32,6 +35,29 @@ RUN echo "y" | sdkmanager "extras;android;m2repository"
 RUN echo "y" | sdkmanager "extras;google;m2repository"
 RUN echo "y" | sdkmanager "platforms;android-36"
 RUN echo "y" | sdkmanager --update
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libpulse0 \
+    libnss3 \
+    libx11-6 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxtst6 \
+    libfontconfig1 \
+    libfreetype6 \
+    libdbus-1-3 \
+    libxkbcommon0 \
+    libxkbcommon-x11-0 \
+    pciutils \
+    cpu-checker
 
 RUN apt-get install -y git curl iputils-ping dnsutils jsonnet jq \
   && wget -q https://gitlab.com/gitlab-org/cli/-/releases/v1.115.0/downloads/glab_1.115.0_linux_amd64.tar.gz -O /tmp/glab.tar.gz \
