@@ -58,7 +58,7 @@ mkdir -p /srv/gitea-runner-data/mnt/.gradle \
 Generate or create `/srv/gitea-runner-data/config.yaml`:
 
 ```shell
-docker run --rm gitea/act_runner:latest generate-config > /srv/gitea-runner-data/config.yaml
+docker run --entrypoint="" --rm gitea/act_runner:latest act_runner generate-config > /srv/gitea-runner-data/config.yaml
 ```
 
 Update `/srv/gitea-runner-data/config.yaml` with the following configuration:
@@ -92,9 +92,8 @@ services:
     image: gitea/act_runner:latest
     container_name: gitea-act-runner
     restart: unless-stopped
-    devices:
-      - /dev/kvm:/dev/kvm
     environment:
+      - CONFIG_FILE=/config.yaml
       - GITEA_INSTANCE_URL=https://gitea.example.com
       - GITEA_RUNNER_REGISTRATION_TOKEN=your_registration_token_here
       - GITEA_RUNNER_NAME=android-sdk-runner
@@ -172,15 +171,24 @@ jobs:
 
       - name: Wait for emulator boot
         run: |
-          echo "Waiting for device connection..."
-          adb wait-for-device
-
-          echo "Waiting for emulator boot completion..."
+          echo "Waiting for emulator to connect and finish booting..."
           BOOT_COMPLETED=""
           TIMEOUT=300
           ELAPSED=0
+
           until [ "${BOOT_COMPLETED}" = "1" ] || [ ${ELAPSED} -ge ${TIMEOUT} ]; do
+            if ! pgrep -f "emulator" > /dev/null; then
+              echo "Error: Emulator process terminated unexpectedly."
+              echo "--- Emulator Logs ---"
+              cat /tmp/emulator.log
+              exit 1
+            fi
+
             BOOT_COMPLETED=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')
+            if [ "${BOOT_COMPLETED}" = "1" ]; then
+              break
+            fi
+
             sleep 2
             ELAPSED=$((ELAPSED + 2))
           done
